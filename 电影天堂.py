@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # coding: UTF-8
 # -*- coding:utf-8 -*-
+import base64
 import re
 import threading
 import os
@@ -52,7 +53,10 @@ def CrawlSourcePage(url,filedir,filename,CrawledURLs):
         f = open(source.decode("utf-8"), 'w')
         for node in Nodes:
             sourceurl = node.xpath("text()")[0]
-            f.write(sourceurl.encode("utf-8")+"\n")
+            #f.write(sourceurl.encode("utf-8")+"\n")
+            encoded ='thunder://'+base64.b64encode('AA'+sourceurl.encode("utf-8")+ 'ZZ')
+            #print encoded
+            f.write(encoded.encode("utf-8")+"\n")
         f.close()
     except:
         print "!!!!!!!!!!!!!!!!!"
@@ -121,7 +125,7 @@ def CrawIndexPage(starturl):
             else:
                 try:
                     catalog = node.xpath("text()")[0].encode("utf-8")
-                    newdir = "D:/电影资源/" + catalog
+                    newdir = "D:/电影资源1/" + catalog
                     os.makedirs(newdir.decode("utf-8"))
                     print "创建分类目录成功------"+newdir
                     thread = myThread(host + url, newdir,CrawledURLs)
